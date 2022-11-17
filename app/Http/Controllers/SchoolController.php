@@ -165,4 +165,9 @@ class SchoolController extends Controller
         $school->delete();
         return response()->json(['success' => 'School deleted']);
     }
+
+    function test()
+    {
+        return response()->json(['success' => 'Test successeded']);
+    }
 }
