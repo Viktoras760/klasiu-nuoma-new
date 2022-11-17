@@ -45,7 +45,7 @@ Route::put('users/{id}', [UserController::class, 'updateUser']);
     Route::get('schools/{id}', [SchoolController::class, 'getSchool']);
     Route::get('schools', [SchoolController::class, 'getAllSchools']);
     Route::delete('schools/{id}', [SchoolController::class, 'deleteSchool']);
-    Route::post('test', [SchoolController::class, 'test']);
+    Route::get('test', [SchoolController::class, 'test']);
 //});
 //Floor routes
 Route::group([
