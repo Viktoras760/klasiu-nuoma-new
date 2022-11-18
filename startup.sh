@@ -2,7 +2,7 @@
 
 echo "Copying custom default over to /etc/nginx/sites-available/default"
 
-NGINX_CONF=/home/default
+NGINX_CONF=/home/site/default
 
 if [ -f "$NGINX_CONF" ]; then
     cp /home/site/default /etc/nginx/sites-available/default
