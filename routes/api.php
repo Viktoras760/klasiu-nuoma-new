@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group([
     'middleware' => 'api'
 ], function ($router) {
-Route::post('users', [UserController::class, 'addUser']);
+//Route::post('users', [UserController::class, 'addUser']);
 Route::patch('users/{id}', [UserController::class, 'declineRegistrationRequest']);
 Route::get('users', [UserController::class, 'getAllUsers']);
 Route::delete('users/{id}', [UserController::class, 'deleteUser']);
@@ -87,9 +87,9 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('login', [AuthController::class, 'login'])/*->name('login')*/;
-    Route::post('register', [AuthController::class, 'register']);
-    Route::get('logout', [AuthController::class, 'logout'])/*->name('logout')*/;
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
+    Route::post('iat', [AuthController::class, 'login'])/*->name('login')*/;
+    Route::post('users', [AuthController::class, 'register']);
+    Route::get('tokens', [AuthController::class, 'logout'])/*->name('logout')*/;
+    Route::post('tokens', [AuthController::class, 'refresh']);
+    Route::post('user', [AuthController::class, 'me']);
 });
