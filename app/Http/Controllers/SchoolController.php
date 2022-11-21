@@ -168,6 +168,6 @@ class SchoolController extends Controller
 
     function test()
     {
-        return response()->json(['success' => 'Test successeded']);
+        return response()->json(['success' => 'Test successeded55555']);
     }
 }
