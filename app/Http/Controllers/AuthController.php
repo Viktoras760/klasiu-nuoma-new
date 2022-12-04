@@ -120,13 +120,19 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        return response()->json([
+        /*return response()->json([
                 'status' => 'success',
                 'user' => $user,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
                 ]
+            ]);*/
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'user' => auth()->user()
             ]);
 
     }
@@ -152,7 +158,7 @@ class AuthController extends Controller
         
 
         $token = Auth::login($user);
-        return response()->json([
+        /*return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
             'user' => $user,
@@ -160,7 +166,8 @@ class AuthController extends Controller
                 'token' => $token,
                 'type' => 'bearer',
             ]
-        ]);
+        ]);*/
+        return response()->json(['success' => 'User created successfully'], 200);
     }
 
     public function logout()
