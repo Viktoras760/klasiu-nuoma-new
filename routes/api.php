@@ -37,16 +37,17 @@ Route::put('users/{id}', [UserController::class, 'updateUser']);
 });
 
 //School routes
-/*Route::group([
+Route::group([
     'middleware' => 'api'
-], function ($router) {*/
+], function ($router) {
     Route::post('schools', [SchoolController::class, 'addSchool']);
     Route::put('schools/{id}', [SchoolController::class, 'updateSchool']);
     Route::get('schools/{id}', [SchoolController::class, 'getSchool']);
     Route::get('schools', [SchoolController::class, 'getAllSchools']);
     Route::delete('schools/{id}', [SchoolController::class, 'deleteSchool']);
     Route::get('test', [SchoolController::class, 'test']);
-//});
+});
+
 //Floor routes
 Route::group([
     'middleware' => 'api'

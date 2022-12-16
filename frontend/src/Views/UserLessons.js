@@ -1,0 +1,143 @@
+import { useEffect, useState } from 'react';
+import APIController from '../Controllers/APIController';
+import {Spinner, Button, Row, Col, Alert, Modal} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+const LessonDetail = ({ lesson, onDelete }) => {
+    const { http } = APIController();
+    const [isLoadingDelete, setLoadingDelete] = useState(false);
+    const [isLoadingApprove, setLoadingApprove] = useState(false);
+    const navigate = useNavigate();
+    
+
+    const deleteLesson = () => {
+        setLoadingDelete(true);
+    }
+
+    function submitDelete() {
+        http.delete(`/user_lessons/{id}/${lesson.id_Lesson}`).then((res) => {
+            alert(res.data.success);
+            onDelete();
+        }).catch((error) => {
+            if(error.response.data.error != null) {
+                alert(error.response.data.error);
+            } else if (error.response.data.errors != null) {
+                var errors = error.response.data.errors;
+                var all_errors = [];
+                Object.keys(errors).map((err) => (
+                    all_errors.push(errors[err][0])
+                ))
+                alert(all_errors.join("\n"));
+            }
+        }).finally(() => {
+            setLoadingDelete(false); 
+        });
+    }
+
+    function DeleteApproval({message}) {
+        const [show, setShow] = useState(message);
+
+        const handleSubmit = () => {
+            setShow(false);
+            submitDelete();
+        }
+      
+        const handleClose = () => {
+            setShow(false);
+            setLoadingDelete(false);
+        }
+      
+        return (
+            <>
+                <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Unregister from lesson</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to unregister from {lesson.Lessons_name}?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleSubmit}>
+                        Unregister
+                    </Button>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+                </Modal>
+            </>
+        );
+    }
+
+    return (
+        <>
+        <DeleteApproval message={isLoadingDelete} />
+            <Col sm={6}>
+                <div className="card mb-3">
+                    <div className="card-body">
+
+                        <p>Lessons name: {lesson.Lessons_name}</p> 
+                        <p>Lessons starting time: {lesson.Lessons_starting_time}</p>
+                        <p>Lessons ending time: {lesson.Lessons_ending_time}</p>
+                        <Button variant="primary" className="w-100 mb-2" disabled={isLoadingApprove}>
+                            {isLoadingApprove ? <><Spinner animation="border" size="sm" /> Fetching details…</> : 'Details'}
+                        </Button>
+                        <Button variant="danger" className="w-100" disabled={isLoadingDelete} onClick={!isLoadingDelete ? deleteLesson : null}>
+                            {isLoadingDelete ? <><Spinner animation="border" size="sm" /> Unregistering…</> : 'Unregister'}
+                        </Button>
+                    </div>
+                </div>
+            </Col>
+        </>
+    );
+}
+
+function LessonList() {
+    const { http } = APIController();
+    const [LessonDetails, setLessonDetails] = useState('');
+    const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
+
+    useEffect(() => {
+        fetchLessonDetails();
+    }, []);
+
+    const fetchLessonDetails = () => {
+        console.log("fetching");
+        http.get('/user_lessons/').then((res) => {
+            console.log(res);
+            setLessonDetails(res.data);
+            console.log(res.data)
+        });
+    }
+
+    function SuccessAlert({message}) {
+        const [show, setShow] = useState(message ? true : false);
+
+        if (show) {
+            //sessionStorage.removeItem('post-success');
+            return (
+                <Alert variant="success" onClose={() => {setShow(false); setSuccessMessage(); }} dismissible className="mt-3">
+                    <Alert.Heading>Success</Alert.Heading>
+                    <p>
+                        {message}
+                    </p>
+                </Alert>
+            );
+        }
+        return (<></>);
+    }
+
+    return (
+        <div>
+            <h1 className="mb-4 mt-4">Lessons</h1>
+            <SuccessAlert message={successMessage} />
+            <Row className="justify-content-center mt-3">
+                {LessonDetails ? LessonDetails.map((lesson, index) => {
+                    return (<LessonDetail lesson={lesson} onDelete={fetchLessonDetails} key={index} />);
+                    }) : <div className="text-center">
+                    <Spinner animation="border" />
+                </div>}
+            </Row>
+        </div>
+    )
+}
+
+export default LessonList;
