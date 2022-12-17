@@ -15,7 +15,7 @@ const LessonDetail = ({ lesson, onDelete }) => {
     }
 
     function submitDelete() {
-        http.delete(`/user_lessons/{id}/${lesson.id_Lesson}`).then((res) => {
+        http.delete(`/user_lessons/${lesson.id_Lesson}`).then((res) => {
             alert(res.data.success);
             onDelete();
         }).catch((error) => {

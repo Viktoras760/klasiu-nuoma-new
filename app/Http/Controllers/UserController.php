@@ -122,6 +122,20 @@ class UserController extends Controller
         return $users;
     }
 
+    function getUser($id)
+    {
+        $role = (new AuthController)->authRole();
+        if($role != 'System Administrator')
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No rights to do that',
+            ], 401);
+        }
+        $user = \App\Models\User::find($id);
+        return $user;
+    }
+
     function deleteUser($id)
     {
         $role = (new AuthController)->authRole();
@@ -173,7 +187,7 @@ class UserController extends Controller
             'Name' => $request->Name,
             'Surname' => $request->Surname,
             'Personal_code' => $request->Personal_code,
-            'Email' => $request->Email,
+            'Email' => $request->email,
             'Grade' => $request->Grade,
             'Password' => Hash::make($request->Password),
             'Confirmation' => $request->Confirmation,

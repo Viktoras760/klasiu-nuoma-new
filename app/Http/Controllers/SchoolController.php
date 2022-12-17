@@ -65,19 +65,19 @@ class SchoolController extends Controller
     function getSchool($id)
     {
         $role = (new AuthController)->authRole();
-        if($role != 'System Administrator' && $role != 'School Administrator')
+        $school = \App\Models\School::find($id);
+        if($role != 'System Administrator' && $school->id_School != auth()->user()->fk_Schoolid_School)
         {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No rights to do that',
             ], 401);
         }
-        $school = \App\Models\School::find($id);
         if ($role == 'School Administrator' && $school->id_School != auth()->user()->fk_Schoolid_School)
         {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No rights to update this school',
+                'message' => 'No rights to get this school',
             ], 401);
         }
         if(!$school) {

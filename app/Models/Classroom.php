@@ -23,9 +23,6 @@ class Classroom extends Model
     ];
 
     protected $hidden = [
-        'Musical_equipment',
-        'Chemistry_equipment',
-        'Computers'
     ];
 
     public $timestamps=false;

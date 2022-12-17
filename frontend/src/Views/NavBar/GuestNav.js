@@ -11,7 +11,7 @@ function Guest() {
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
                     <LinkContainer to="/">
-                        <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+                        <Navbar.Brand>Class rent</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

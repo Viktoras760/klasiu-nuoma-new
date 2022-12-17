@@ -30,6 +30,7 @@ Route::group([
     'middleware' => 'api'
 ], function ($router) {
 //Route::post('users', [UserController::class, 'addUser']);
+Route::get('user/{id}', [UserController::class, 'getUser']);
 Route::patch('users/{id}', [UserController::class, 'declineRegistrationRequest']);
 Route::get('users', [UserController::class, 'getAllUsers']);
 Route::delete('users/{id}', [UserController::class, 'deleteUser']);

@@ -34,7 +34,6 @@ class User extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'iat',
-        'fk_Schoolid_School',
         'remember_token'
     ];
 

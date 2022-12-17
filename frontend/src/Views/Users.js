@@ -4,47 +4,45 @@ import { Navigate, useParams} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {Spinner, Button, Row, Col, Alert, Modal} from 'react-bootstrap';
 
-function SchoolList() {
+function UserList() {
 
     const navigate = useNavigate();
     const { http } = APIController();
-    const [Schools, setSchools] = useState('');
+    const [Users, setUsers] = useState('');
 
     useEffect(() => {
-        fetchSchools();
+        fetchUsers();
     }, []);
 
-    const fetchSchools= () => {
+    const fetchUsers= () => {
 
         console.log("fetching");
-        http.get('/schools/').then((res) => {
-            setSchools(res.data);
+        http.get('/users/').then((res) => {
+            console.log(res);
+            setUsers(res.data);
+            console.log(res.data)
         });
         
 
     };
-    const editSchool= async(e, id) => {
-        navigate(`/schools/${id}`);
+    const editUser= async(e, id) => {
+        navigate(`/user/${id}`);
     };
 
-    const addSchool= () => {
-        navigate(`/school`);
-    };
-
-    const DeleteSchool= async(e, id) => {
+    const DeleteUser= async(e, id) => {
 
 
-        http.delete(`/schools/${id}`, {
+        http.delete(`/users/${id}`, {
             
         }).then((res) => {
             console.log(res.data);
             window.location.reload();
         }).catch((res) => {
             //alert(res.data);
-            alert("Failed to remove school");
-            navigate(`/schools/`);
+            alert("Failed to remove user");
+            navigate(`/users/`);
         })  
-        navigate(`/schools/`);
+        navigate(`/users/`);
     };
 
     return (
@@ -54,36 +52,34 @@ function SchoolList() {
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header">
-                    <h4>Schools</h4>
+                    <h4>Users</h4>
                   </div>
                   <div className="card-body">
-                        <button
-                            className="btn btn-success"
-                            onClick={() => addSchool()}
-                            >
-                            Add new school
-                        </button>
                     </div>
                   <table className="table">
                     <thead>
                       <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Adress</th>
-                        <th scope="col">Pupil amount</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {Object.entries(Schools).map(([key, val]) => (
-                        <tr key={val.id_School}>
+                      {Object.entries(Users).map(([key, val]) => (
+                        <tr key={val.id_User}>
                           <th scope="row">{val.Name}</th>
-                          <th scope="row">{val.Adress}</th>
-                          <th scope="row">{val.Pupil_amount}</th>
+                          <th scope="row">{val.Surname}</th>
+                          <th scope="row">{val.email}</th>
+                          <th scope="row">{val.Grade}</th>
+                          <th scope="row">{val.Role}</th>
                           <td>
                             <button
                               className="btn btn-success"
-                              onClick={(e) => editSchool(e, val.id_School)}
+                              onClick={(e) => editUser(e, val.id_User)}
                             >
                               Edit
                             </button>
@@ -91,7 +87,7 @@ function SchoolList() {
                           <td>
                             <button
                               className="btn btn-warning"
-                              onClick={(e) => DeleteSchool(e, val.id_School)}
+                              onClick={(e) => DeleteUser(e, val.id_User)}
                             >
                               Delete
                             </button>
@@ -109,4 +105,4 @@ function SchoolList() {
     
 }
 
-export default SchoolList;
+export default UserList;
