@@ -76,6 +76,7 @@ Route::group([
     'middleware' => 'api'
 ], function ($router) {
 Route::get('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons/{id}', [LessonController::class, 'getLesson']);
+Route::get('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons/', [LessonController::class, 'getLessons']);
 Route::post('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons', [LessonController::class, 'addLesson']);
 Route::post('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons/{id}', [LessonController::class, 'registerToLesson']);
 Route::delete('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons/{id}', [LessonController::class, 'deleteLesson']);

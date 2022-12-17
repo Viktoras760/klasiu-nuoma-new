@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from '../Home';
 import Dashboard from '../Dashboard';
-import LessonList from '../UserLessons';
+import UserLessons from '../UserLessons';
 import SchoolList from '../Schools';
 import EditSchool from '../School';
 import AddSchool from '../AddSchool';
@@ -11,7 +11,10 @@ import FloorList from '../FloorList';
 import AddFloor from '../AddFloor';
 import AddClassroom from '../AddClassroom';
 import ClassroomList from '../ClassroomList';
+import LessonList from '../LessonList';
 import EditClassroom from '../EditClassroom';
+import EditLesson from '../EditLesson';
+import AddLesson from '../AddLesson';
 import APIController from '../../Controllers/APIController';
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
@@ -81,7 +84,7 @@ function Auth() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/lessons" element={<LessonList />} />
+                    <Route path="/lessons" element={<UserLessons />} />
                     <Route path="/schools" element={<SchoolList />} />
                     <Route path="/schools/:id" element={<EditSchool />} />
                     <Route path="/school" element={<AddSchool />} />
@@ -92,6 +95,9 @@ function Auth() {
                     <Route path="/schools/:id1/floors/:id2/classrooms" element={<ClassroomList />} />
                     <Route path="/schools/:id1/floors/:id2/classroom/" element={<AddClassroom />} />
                     <Route path="/schools/:id1/floors/:id2/classroom_edit/:id3" element={<EditClassroom />} />
+                    <Route path="/schools/:id1/floors/:id2/classrooms/:id3/lessons" element={<LessonList />} />
+                    <Route path="/schools/:id1/floors/:id2/classrooms/:id3/lesson" element={<AddLesson />} />
+                    <Route path="/schools/:id1/floors/:id2/classrooms/:id3/edit_lesson/:id4" element={<EditLesson />} />
                 </Routes>
             </Container>
         </>

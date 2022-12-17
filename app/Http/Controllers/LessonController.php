@@ -398,6 +398,16 @@ class LessonController extends Controller
         return $userlessons;
     }
 
+    function getLessons()
+    {
+        $lessons = \App\Models\Lesson::all();
+        if (count($lessons) < 1)
+        {
+            return response()->json(['error' => 'There are no lessons'], 404);
+        }
+        return $lessons;
+    }
+
 
 
     

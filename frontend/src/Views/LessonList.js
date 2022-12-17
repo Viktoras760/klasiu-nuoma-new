@@ -4,42 +4,42 @@ import { Navigate, useParams} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {Spinner, Button, Alert, Row, Modal, Col} from 'react-bootstrap';
 
-const ClassroomDetail = ({ classroom, onDelete }) => {
+const LessonDetail = ({ lesson, onDelete }) => {
   const { http, user } = APIController();
   const [isLoadingDelete, setLoadingDelete] = useState(false);
   const [isLoadingApprove, setLoadingApprove] = useState(false);
-  const [school, setSchool] = useState("");
   const navigate = useNavigate();
-  let { id1, id2 } = useParams();
-  
+  let { id1, id2, id3 } = useParams();
 
-  useEffect(() => {
-    fetchSchool();
-  }, []);
-
-  const fetchSchool= () => {
-
-    http.get(`/schools/${id1}`).then((res) => {
-      setSchool(res.data);
-    });
-    
-  };
-
-  const deleteClassroom = () => {
+  const deleteLesson = () => {
       setLoadingDelete(true);
   }
 
-  const Lessons = () => {
-    navigate(`/schools/${id1}/floors/${id2}/classrooms/${classroom.id_Classroom}/lessons`);
-  }
-
-  const editClassroom= async() => {
-    navigate(`/schools/${id1}/floors/${id2}/classroom_edit/${classroom.id_Classroom}`);
+  const editLesson= async() => {
+    navigate(`/schools/${id1}/floors/${id2}/classrooms/${id3}/edit_lesson/${lesson.id_Lesson}`);
 };
+
+const Register= async() => {
+    http.post(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lessons/${lesson.id_Lesson}`).then((res) => {
+        alert(res.data.success);
+    }).catch((error) => {
+        if(error.response.data.error != null) {
+            alert(error.response.data.error);
+        } else if (error.response.data.errors != null) {
+            var errors = error.response.data.errors;
+            var all_errors = [];
+            Object.keys(errors).map((err) => (
+                all_errors.push(errors[err][0])
+            ))
+            alert(all_errors.join("\n"));
+        }
+    });
+}
+
 
 
   function submitDelete() {
-      http.delete(`/schools/${id1}/floors/${id2}/classrooms/${classroom.id_Classroom}`).then((res) => {
+      http.delete(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lessons/${lesson.id_Lesson}`).then((res) => {
           alert(res.data.success);
           onDelete();
       }).catch((error) => {
@@ -75,9 +75,9 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
           <>
               <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
-                  <Modal.Title>Delete classroom</Modal.Title>
+                  <Modal.Title>Delete lesson</Modal.Title>
               </Modal.Header>
-              <Modal.Body>Are you sure you want to delete classroom Nr.{classroom.Number}?</Modal.Body>
+              <Modal.Body>Are you sure you want to delete lesson {lesson.Lessons_name}?</Modal.Body>
               <Modal.Footer>
                   <Button variant="danger" onClick={handleSubmit}>
                       Delete
@@ -94,24 +94,26 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
   return (
       <>
       <DeleteApproval message={isLoadingDelete} />
-          <Col sm={10}>
+          <Col sm={6}>
               <div className="card mb-3">
                   <div className="card-body">
-
-                      <p>Classroom number: {classroom.Number}</p> 
-                      <p>Classroom pupil capacity: {classroom.Pupil_capacity}</p>
-                      <Button variant="primary" className="w-100 mb-2" disabled={isLoadingApprove} onClick={!isLoadingDelete ? Lessons : null}>
-                          {isLoadingApprove ? <><Spinner animation="border" size="sm" /> Fetching details…</> : 'Classroom lessons'}
+                      <p>Lessons name: {lesson.Lessons_name}</p> 
+                      <p>Lessons starting time: {lesson.Lessons_starting_time}</p>
+                      <p>Lessons ending time: {lesson.Lessons_ending_time}</p>
+                      <p>Lessons lower grade limit: {lesson.Lower_grade_limit}</p>
+                      <p>Lessons upper grade limit: {lesson.Upper_grade_limit}</p>
+                      <Button variant="primary" className="w-100 mb-2" disabled={isLoadingApprove} onClick={!isLoadingDelete ? Register : null}>
+                          {isLoadingApprove ? <><Spinner animation="border" size="sm" /> Registering…</> : 'Register to lesson'}
                       </Button>
 
-                      {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator" ) ?(
-                      <Button variant="success" className="w-100 mb-2"  onClick={!isLoadingDelete ? editClassroom : null}>
+                      {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator" || (user.Role == "Teacher" && user.id_User == lesson.creator_id)) ?(
+                      <Button variant="success" className="w-100 mb-2"  onClick={!isLoadingDelete ? editLesson : null}>
                           {isLoadingDelete ? <><Spinner animation="border" size="sm" /> Fetching details…</> : 'Edit'}
                       </Button>
                       ) : null}
                       
-                      {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator" ) ?(
-                      <Button variant="danger" className="w-100 mb-2" disabled={isLoadingDelete} onClick={!isLoadingDelete ? deleteClassroom : null}>
+                      {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator" || (user.Role == "Teacher" && user.id_User == lesson.creator_id)) ?(
+                      <Button variant="danger" className="w-100 mb-2" disabled={isLoadingDelete} onClick={!isLoadingDelete ? deleteLesson : null}>
                           {isLoadingDelete ? <><Spinner animation="border" size="sm" /> Deleting…</> : 'Delete'}
                       </Button>
                       ) : null}
@@ -122,44 +124,44 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
   );
 }
 
-function ClassroomList() {
+function LessonList() {
 
-  let { id1, id2 } = useParams();
+  let { id1, id2, id3 } = useParams();
   const navigate = useNavigate();
   const { http, user } = APIController();
-  const [Floors, setFloors] = useState('');
-  const [Classrooms, setClassrooms] = useState('');
+  const [Lessons, setLessons] = useState('');
   const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
 
   useEffect(() => {
-      fetchClassrooms();
+      fetchLessons();
   }, []);
 
-  const fetchClassrooms= () => {
+  const fetchLessons= () => {
 
-    http.get(`/schools/${id1}/floors/${id2}/classrooms`).then((res) => {
-      setClassrooms(res.data);
+    http.get(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lessons`).then((res) => {
+      setLessons(res.data);
+      console.log(res.data);
     });
     
   };
 
-  const addClassroom = () => {
-    navigate(`/schools/${id1}/floors/${id2}/classroom/`);
+  const addLesson = () => {
+    navigate(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lesson`);
   };
 
-  const DeleteClassroom= async(e, id) => {
+  const DeleteLesson= async(e, id) => {
 
-      http.delete(`/schools/${id1}/floors/${id2}/classroom/${id}`, {
+      http.delete(`/schools/${id1}/floors/${id2}/classroom/${id3}/lessons/${id}`, {
           
       }).then((res) => {
           console.log(res.data);
           window.location.reload();
       }).catch((res) => {
           //alert(res.data);
-          alert("Failed to remove classroom");
-          navigate(`/schools/${id1}/floors/${id2}/classrooms`);
+          alert("Failed to remove lesson");
+          navigate(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lessons`);
       })  
-      navigate(`/schools/${id1}/floors/${id2}/classrooms`);
+      navigate(`/schools/${id1}/floors/${id2}/classrooms/${id3}/lessons`);
   };
 
   function SuccessAlert({message}) {
@@ -181,18 +183,18 @@ function ClassroomList() {
 
   return (
     <div>
-        <h1 className="mb-4 mt-4">Classrooms</h1>
+        <h1 className="mb-4 mt-4">Lessons</h1>
         <SuccessAlert message={successMessage} />
-        {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator") ?(
+        {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator" || user.Role == "Teacher") ?(
                 <div class="flex items-center">
-                    <Button variant="success" className="w-100" onClick={addClassroom}>Add new classroom
+                    <Button variant="success" className="w-100" onClick={addLesson}>Add new lesson
                     </Button>
                     
                 </div>
                 ) : null}
         <Row className="justify-content-center mt-3">
-            {Classrooms ? Classrooms.map((classroom, index) => {
-                return (<ClassroomDetail classroom={classroom} onDelete={fetchClassrooms} key={index} />);
+            {Lessons ? Lessons.map((lesson, index) => {
+                return (<LessonDetail lesson={lesson} onDelete={fetchLessons} key={index} />);
                 }) : <div className="text-center">
                 <Spinner animation="border" />
             </div>}
@@ -202,4 +204,4 @@ function ClassroomList() {
     
 }
 
-export default ClassroomList;
+export default LessonList;

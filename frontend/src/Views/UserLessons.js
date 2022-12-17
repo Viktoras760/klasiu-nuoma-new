@@ -90,7 +90,7 @@ const LessonDetail = ({ lesson, onDelete }) => {
     );
 }
 
-function LessonList() {
+function UserLessons() {
     const { http } = APIController();
     const [LessonDetails, setLessonDetails] = useState('');
     const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
@@ -140,4 +140,4 @@ function LessonList() {
     )
 }
 
-export default LessonList;
+export default UserLessons;
