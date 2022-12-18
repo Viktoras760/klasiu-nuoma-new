@@ -16,21 +16,25 @@ import EditClassroom from '../EditClassroom';
 import EditLesson from '../EditLesson';
 import AddLesson from '../AddLesson';
 import APIController from '../../Controllers/APIController';
-import {Navbar, Nav, Container} from 'react-bootstrap';
+import {Navbar, Nav, Container, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Auth() {
     const { token, logout } = APIController();
     const { http } = APIController();
     const [userdetail, setUserdetail] = useState("");
     const [schooldetail, setSchooldetail] = useState("");
+    const navigate = useNavigate();
+    const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
     
     const logoutUser = () => {
         if (token !== undefined) {
             logout();
         }
     }
+
 
     useEffect(() => {
         fetchUserDetail();
@@ -39,7 +43,18 @@ function Auth() {
     const fetchUserDetail = () => {
         http.post("/auth/user").then((res) => {
             setUserdetail(res.data);
-        });
+        }).catch((error) => {
+            if(error.response.data.error != null) {
+                alert(error.response.data.error);
+            } else if (error.response.data.errors != null) {
+                var errors = error.response.data.errors;
+                var all_errors = [];
+                Object.keys(errors).map((err) => (
+                    all_errors.push(errors[err][0])
+                ))
+                alert(all_errors.join("\n"));
+            }
+        })
     };
 
     return (
@@ -58,9 +73,10 @@ function Auth() {
                             <LinkContainer to="/dashboard">
                                 <Nav.Link>Dashboard</Nav.Link>
                             </LinkContainer>
+                            {userdetail.fk_Schoolid_School != null ? <>
                             <LinkContainer to={`/schools/${userdetail.fk_Schoolid_School}/floors`}>
                                 <Nav.Link>School floors</Nav.Link>
-                            </LinkContainer>
+                            </LinkContainer></> : ""}
                             <LinkContainer to="/lessons">
                                 <Nav.Link>My Lessons</Nav.Link>
                             </LinkContainer>

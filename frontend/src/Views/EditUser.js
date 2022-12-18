@@ -172,8 +172,8 @@ export default function EditUser() {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicSchool">
                             <Form.Label>School</Form.Label>
-                            <Form.Select onChange={e => setSchools(e.target.value)}>
-                                {schools.map((sch) => {
+                            <Form.Select onChange={e => setSchoolID(e.target.value)}>
+                                {schools.map((sch, index) => {
                                     if (sch.id_School === school_id) {
                                         return (<option key={sch.id_School} value={sch.id_School} selected>{sch.Name}</option>);
                                     } else {

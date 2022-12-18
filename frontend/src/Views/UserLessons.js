@@ -94,17 +94,32 @@ function UserLessons() {
     const { http } = APIController();
     const [LessonDetails, setLessonDetails] = useState('');
     const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
+    const [errorMessage, setErrorMessage] = useState();
+    const navigate = useNavigate();
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchLessonDetails();
     }, []);
 
     const fetchLessonDetails = () => {
-        console.log("fetching");
         http.get('/user_lessons/').then((res) => {
-            console.log(res);
             setLessonDetails(res.data);
-            console.log(res.data)
+        }).catch((error) => {
+            if(error.response.data.error != null) {
+                alert(error.response.data.error);
+            } else if (error.response.data.errors != null) {
+                var errors = error.response.data.errors;
+                var all_errors = [];
+                Object.keys(errors).map((err) => (
+                    all_errors.push(errors[err][0])
+                ))
+                alert(all_errors.join("\n"));
+            }
+             
+        }).finally(() => {
+            setLoading(false);
+            navigate(-1);
         });
     }
 
@@ -112,7 +127,7 @@ function UserLessons() {
         const [show, setShow] = useState(message ? true : false);
 
         if (show) {
-            //sessionStorage.removeItem('post-success');
+            sessionStorage.removeItem('post-success');
             return (
                 <Alert variant="success" onClose={() => {setShow(false); setSuccessMessage(); }} dismissible className="mt-3">
                     <Alert.Heading>Success</Alert.Heading>

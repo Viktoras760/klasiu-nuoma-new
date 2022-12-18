@@ -393,7 +393,7 @@ class LessonController extends Controller
         $userlessons = \App\Models\User::find(auth()->user()->id_User)->lessons()->get();
         if (count($userlessons) < 1)
         {
-            return response()->json(['error' => 'user has no lessons'], 404);
+            return response()->json(['error' => 'User has no lessons'], 404);
         }
         return $userlessons;
     }

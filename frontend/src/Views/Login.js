@@ -15,7 +15,17 @@ export default function Login() {
         http.post('/auth/iat', { email: email, password: password }).then((res) => {
             setToken(res.data.user, res.data.access_token);
         }).catch((error) => {
-            alert(error.response.data.error);
+            if(error.response.data.error != null) {
+                alert(error.response.data.error);
+            } else if (error.response.data.errors != null) {
+                var errors = error.response.data.errors;
+                var all_errors = [];
+                Object.keys(errors).map((err) => (
+                    all_errors.push(errors[err][0])
+                ))
+                alert(all_errors.join("\n"));
+            }
+            alert("Cannot login! Incorrect credentials!");
         }).finally(() => {
             setLoading(false);
         });

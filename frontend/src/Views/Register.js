@@ -13,6 +13,7 @@ export default function Register() {
 
     const [isLoading, setLoading] = useState(false);
 
+
     const submitForm = () => {
         setLoading(true);
         http.post('/auth/users', { email: email, password: password, Name: name, Surname: surname, Personal_code: personal_code}).then((res) => {

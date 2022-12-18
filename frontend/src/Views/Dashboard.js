@@ -42,17 +42,19 @@ export default function Dashboard() {
     return (
         <div>
             <h1 className="mb-4 mt-4">Dashboard page</h1>
+            {userdetail.fk_Schoolid_School == null ? <>
+            <p className="mb-4 mt-4"><strong>Warning! You won't be able to see your schools data until you get assigned to it!!!</strong></p></> : ""}
             {renderElement()}
             <footer>
-                <div class="footer">
-                    <div class="row py-4">
-                        <div class="col-lg-4 col-md-6 mb-lg-0">
-                            <h6 class="text-uppercase font-weight-bold mb-4">Class rent</h6>
-                            <p class="text-muted mb-4">Project made for schools</p>
+                <div className="footer">
+                    <div className="row py-4">
+                        <div className="col-lg-4 col-md-6 mb-lg-0">
+                            <h6 className="text-uppercase font-weight-bold mb-4">Class rent</h6>
+                            <p className="text-muted mb-4">Project made for schools</p>
                         </div>
                     </div>
-                    <div class="container text-center">
-                        <p class="text-muted mb-0 py-2">© All rights belong to IFF-9/7 group student Viktoras Dechtiar.</p>
+                    <div className="container text-center">
+                        <p className="text-muted mb-0 py-2">© All rights belong to IFF-9/7 group student Viktoras Dechtiar.</p>
                     </div>
                 </div>
             </footer>

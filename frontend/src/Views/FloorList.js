@@ -126,6 +126,19 @@ function FloorList() {
 
     http.get(`/schools/${id1}/floors`).then((res) => {
       setFloors(res.data);
+    }).catch((error) => {
+        if(error.response.data.error != null) {
+            alert(error.response.data.error);
+        } else if (error.response.data.errors != null) {
+            var errors = error.response.data.errors;
+            var all_errors = [];
+            Object.keys(errors).map((err) => (
+                all_errors.push(errors[err][0])
+            ))
+            alert(all_errors.join("\n"));
+        }
+    }).finally(() => {
+        //setLoading(false);
     });
     
   };
