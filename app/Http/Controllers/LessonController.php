@@ -390,7 +390,7 @@ class LessonController extends Controller
 
     function getUserLessons()
     {
-        $userlessons = \App\Models\User::find(auth()->user()->id_User)->lessons()->get();
+        $userlessons = \App\Models\User::find(auth()->user()->id_User)->lessons()->orderBy('Lessons_starting_time', 'asc')->get();
         if (count($userlessons) < 1)
         {
             return response()->json(['error' => 'User has no lessons'], 404);

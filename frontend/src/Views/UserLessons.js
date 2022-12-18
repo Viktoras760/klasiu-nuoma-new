@@ -105,7 +105,7 @@ function UserLessons() {
     const fetchLessonDetails = () => {
         http.get('/user_lessons/').then((res) => {
             setLessonDetails(res.data);
-        }).catch((error) => {
+        })/*.catch((error) => {
             if(error.response.data.error != null) {
                 alert(error.response.data.error);
             } else if (error.response.data.errors != null) {
@@ -120,7 +120,7 @@ function UserLessons() {
         }).finally(() => {
             setLoading(false);
             navigate(-1);
-        });
+        });*/
     }
 
     function SuccessAlert({message}) {
