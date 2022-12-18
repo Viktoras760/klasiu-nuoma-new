@@ -41,7 +41,8 @@ export default function APIController() {
             "Authorization": `Bearer ${token}`
         }
     });
-    
+
+
     return {
         setToken: saveToken,
         token,

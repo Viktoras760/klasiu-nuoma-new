@@ -76,7 +76,7 @@ export default function AddClassroom() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicLessonLowerGradeLimit">
                         <Form.Label>Lesson lower grade limit</Form.Label>
-                        <Form.Control type="number" placeholder="Enter lesson lower grade time"  onChange={e => setLower_grade_limit(e.target.value)} />
+                        <Form.Control type="number" placeholder="Enter lesson lower grade limit"  onChange={e => setLower_grade_limit(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicLessonUpperGradeLimit">
                         <Form.Label>Lesson upper grade limit</Form.Label>
