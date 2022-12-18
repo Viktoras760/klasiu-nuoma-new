@@ -219,18 +219,12 @@ class ClassroomController extends Controller
 
     function getClassroomByFloor($idSchool, $idFloor)
     {
+        $school = \App\Models\School::find($idSchool);
         $role = (new AuthController)->authRole();
-        if($role != 'System Administrator' && $role != 'School Administrator')
-        {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No rights to do that',
-            ], 401);
-        }
         $classrooms = \App\Models\Classroom::where('classroom.fk_Floorid_Floor','=',$idFloor)->get();
 
         $floor = \App\Models\Floor::find($idFloor);
-        $school = \App\Models\School::find($idSchool);
+        
         if (($role == 'School Administrator' || $role == 'Teacher' || $role == 'Pupil') && $school->id_School != auth()->user()->fk_Schoolid_School)
         {
             return response()->json([

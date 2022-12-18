@@ -58,6 +58,10 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
       });
   }
 
+  const pStyle = {
+    fontFamily: 'Playfair Display'
+  };
+
   function DeleteApproval({message}) {
       const [show, setShow] = useState(message);
 
@@ -98,8 +102,8 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
               <div className="card mb-3">
                   <div className="card-body">
 
-                      <p>Classroom number: {classroom.Number}</p> 
-                      <p>Classroom pupil capacity: {classroom.Pupil_capacity}</p>
+                      <p style={{color:'#1B3D6C', margin: 20, fontSize: 20, fontFamily: 'Playfair Display'}}>Classroom number: {classroom.Number}</p> 
+                      <p style={{color:'#1B3D6C', margin: 20, fontSize: 20, fontFamily: 'Playfair Display'}}>Classroom pupil capacity: {classroom.Pupil_capacity}</p>
                       <Button variant="primary" className="w-100 mb-2" disabled={isLoadingApprove} onClick={!isLoadingDelete ? Lessons : null}>
                           {isLoadingApprove ? <><Spinner animation="border" size="sm" /> Fetching details…</> : 'Classroom lessons'}
                       </Button>
@@ -184,7 +188,7 @@ function ClassroomList() {
         <h1 className="mb-4 mt-4">Classrooms</h1>
         <SuccessAlert message={successMessage} />
         {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator") ?(
-                <div class="flex items-center">
+                <div className="flex items-center">
                     <Button variant="success" className="w-100" onClick={addClassroom}>Add new classroom
                     </Button>
                     

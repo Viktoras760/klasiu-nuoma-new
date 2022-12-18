@@ -174,7 +174,7 @@ function FloorList() {
         <h1 className="mb-4 mt-4">Floors</h1>
         <SuccessAlert message={successMessage} />
         {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator") ?(
-                <div class="flex items-center">
+                <div className="flex items-center">
                     <Button variant="success" className="w-100" onClick={addFloor}>Add new floor
                     </Button>
                     
