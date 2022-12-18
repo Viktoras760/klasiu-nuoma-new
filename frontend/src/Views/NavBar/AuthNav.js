@@ -15,6 +15,7 @@ import LessonList from '../LessonList';
 import EditClassroom from '../EditClassroom';
 import EditLesson from '../EditLesson';
 import AddLesson from '../AddLesson';
+import Schedule from '../Schedule';
 import APIController from '../../Controllers/APIController';
 import {Navbar, Nav, Container, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
@@ -91,6 +92,10 @@ function Auth() {
                             <LinkContainer to="/users">
                                 <Nav.Link>School Users</Nav.Link>
                             </LinkContainer></> : ""}
+                            {userdetail.Role == "Teacher" ? <>
+                            <LinkContainer to="/schedule">
+                                <Nav.Link>Schedule</Nav.Link>
+                            </LinkContainer></> : ""}
                             <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
@@ -101,6 +106,7 @@ function Auth() {
                     <Route path="/" element={<Home />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/lessons" element={<UserLessons />} />
+                    <Route path="/schedule" element={<Schedule />} />
                     <Route path="/schools" element={<SchoolList />} />
                     <Route path="/schools/:id" element={<EditSchool />} />
                     <Route path="/school" element={<AddSchool />} />

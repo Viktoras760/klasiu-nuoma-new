@@ -3,7 +3,7 @@ import APIController from '../Controllers/APIController';
 import {Spinner, Button, Row, Col, Alert, Modal} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const LessonDetail = ({ lesson, onDelete }) => {
+const LessonDetail2 = ({ lesson, onDelete }) => {
     const { http } = APIController();
     const [isLoadingDelete, setLoadingDelete] = useState(false);
     const [isLoadingApprove, setLoadingApprove] = useState(false);
@@ -15,7 +15,7 @@ const LessonDetail = ({ lesson, onDelete }) => {
     }
 
     function submitDelete() {
-        http.delete(`/user_lessons/${lesson.id_Lesson}`).then((res) => {
+        http.delete(`/teacher_lessons/${lesson.id_Lesson}`).then((res) => {
             alert(res.data.success);
             onDelete();
         }).catch((error) => {
@@ -51,12 +51,12 @@ const LessonDetail = ({ lesson, onDelete }) => {
             <>
                 <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Unregister from lesson</Modal.Title>
+                    <Modal.Title>Delete lesson</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to unregister from {lesson.Lessons_name}?</Modal.Body>
+                <Modal.Body>Are you sure you want to delete {lesson.Lessons_name}?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleSubmit}>
-                        Unregister
+                        Delete
                     </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
@@ -90,7 +90,7 @@ const LessonDetail = ({ lesson, onDelete }) => {
     );
 }
 
-function UserLessons() {
+function Schedule() {
     const { http } = APIController();
     const [LessonDetails, setLessonDetails] = useState('');
     const [successMessage, setSuccessMessage] = useState(sessionStorage.getItem('post-success'));
@@ -103,7 +103,7 @@ function UserLessons() {
     }, []);
 
     const fetchLessonDetails = () => {
-        http.get('/user_lessons/').then((res) => {
+        http.get('/teacher_lessons/').then((res) => {
             setLessonDetails(res.data);
         }).catch((error) => {
             if(error.response.data.error != null) {
@@ -116,10 +116,9 @@ function UserLessons() {
                 ))
                 alert(all_errors.join("\n"));
             }
-            navigate(-1);
+             
         }).finally(() => {
             setLoading(false);
-            //navigate(-1);
         });
     }
 
@@ -146,7 +145,7 @@ function UserLessons() {
             <SuccessAlert message={successMessage} />
             <Row className="justify-content-center mt-3">
                 {LessonDetails ? LessonDetails.map((lesson, index) => {
-                    return (<LessonDetail lesson={lesson} onDelete={fetchLessonDetails} key={index} />);
+                    return (<LessonDetail2 lesson={lesson} onDelete={fetchLessonDetails} key={index} />);
                     }) : <div className="text-center">
                     <Spinner animation="border" />
                 </div>}
@@ -155,4 +154,4 @@ function UserLessons() {
     )
 }
 
-export default UserLessons;
+export default Schedule;

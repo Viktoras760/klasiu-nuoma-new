@@ -408,6 +408,17 @@ class LessonController extends Controller
         return $lessons;
     }
 
+    function getTeachersLessons()
+    {
+        $user = auth()->user();
+        $lessons = \App\Models\Lesson::where('creator_id', '=', $user->id_User)->orderBy('Lessons_starting_time', 'asc')->get();
+        if (count($lessons) < 1)
+        {
+            return response()->json(['error' => 'There are no lessons'], 404);
+        }
+        return $lessons;
+    }
+
 
 
     

@@ -83,6 +83,7 @@ Route::delete('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/less
 Route::delete('user_lessons/{id}', [LessonController::class, 'unregisterFromLesson']);
 Route::put('schools/{idSchool}/floors/{idFloor}/classrooms/{idClassroom}/lessons/{id}', [LessonController::class, 'updateLesson']);
 Route::get('user_lessons/', [LessonController::class, 'getUserLessons']);
+Route::get('teacher_lessons/', [LessonController::class, 'getTeachersLessons']);
 });
 
 //Auth routes
