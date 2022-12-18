@@ -101,7 +101,7 @@ const ClassroomDetail = ({ classroom, onDelete }) => {
           <Col sm={10}>
               <div className="card mb-3">
                   <div className="card-body">
-
+                    <img className="mb-2" src={require("../Images/empty-classroom.jpg")} maxwidth={ '80%'} height={200} align={'right'}></img>
                       <p style={{color:'#1B3D6C', margin: 20, fontSize: 20, fontFamily: 'Playfair Display'}}>Classroom number: {classroom.Number}</p> 
                       <p style={{color:'#1B3D6C', margin: 20, fontSize: 20, fontFamily: 'Playfair Display'}}>Classroom pupil capacity: {classroom.Pupil_capacity}</p>
                       <Button variant="primary" className="w-100 mb-2" disabled={isLoadingApprove} onClick={!isLoadingDelete ? Lessons : null}>
@@ -185,6 +185,7 @@ function ClassroomList() {
 
   return (
     <div>
+        
         <h1 className="mb-4 mt-4">Classrooms</h1>
         <SuccessAlert message={successMessage} />
         {user != null && (user.Role == "School Administrator" || user.Role == "System Administrator") ?(

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import APIController from '../Controllers/APIController';
 import {Spinner, Button, Row, Col, Card, Form, Alert} from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import autoAnimate from "@formkit/auto-animate";
 
 export default function EditUser() {
     const { http } = APIController();
@@ -24,10 +25,18 @@ export default function EditUser() {
 
     const [errorMessage, setErrorMessage] = useState();
 
+    const [open, setOpen] = useState(false);
+    const parentRef = useRef();
+
     useEffect(() => {
         fetchUserDetails();
         fetchSchools();
-    }, []);
+        if (parentRef.current) {
+            autoAnimate(parentRef.current);
+        }
+    }, [parentRef]);
+
+    const showMore = () => setOpen(!open);
 
     const fetchUserDetails = () => {
         http.get(`/user/${id}`).then((res) => {
@@ -109,9 +118,15 @@ export default function EditUser() {
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicPersonalCode">
-                            <Form.Label>Personal code</Form.Label>
-                            <Form.Control readOnly type="number" placeholder="Enter personal code" value={personal_code} onChange={e => setPersonal_code(e.target.value)} />
+                        <Form.Group className="mb-3" controlId="formBasicGrade">
+                        <div className="px-2 cursor-pointer py-1 border-2 border-gray-200 w-[400px] rounded-lg" ref={parentRef}>
+                            <div onClick={showMore} className="select-none font-bold w-full flex justify-between items-center">
+                                <Form.Label>Show personal code</Form.Label>
+                            </div>
+                            {open && (
+                                <Form.Control readOnly type="number" placeholder="Enter personal code" value={personal_code} onChange={e => setPersonal_code(e.target.value)} />
+                            )}
+                        </div>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicGrade">
                             <Form.Label>Grade</Form.Label>

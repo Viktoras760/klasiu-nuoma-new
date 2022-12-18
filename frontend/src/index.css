@@ -16,3 +16,7 @@ code {
 button {
   font-family: 'Playfair Display', serif;
 }
+
+img.mb-2 {
+  max-width: 400px;
+}
