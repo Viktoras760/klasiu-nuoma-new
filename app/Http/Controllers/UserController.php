@@ -197,6 +197,34 @@ class UserController extends Controller
         return response()->json(['success' => 'User updated successfully']);
     }
 
+    function getSchoolUsers()
+    {
+        $role = (new AuthController)->authRole();
+        /*if($role != 'System Administrator' || $role != 'School Administrator')
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No rights to do that',
+            ], 401);
+        }
+        if ($request->Confirmation)
+        {
+            $users = \App\Models\User::where('user.Confirmation','=',$request->Confirmation)->get();
+            return $users;
+        }
+        else if (\App\Models\User::where('user.Confirmation','=',$request->Confirmation)->get() == NULL)
+        {
+            return response()->json(['message' => 'Users with this filter are missing'], 404);
+        }
+        else if (!$request->Confirmation && count($request->all()) > 1)
+        {
+            return response()->json(['message' => 'This filter is not implemented yet'], 404);
+        }*/
+        $user = auth()->user();
+        $users = \App\Models\User::where('fk_Schoolid_School', '=', $user->fk_Schoolid_School)->where('Role', '!=', 'System Administrator')->get();
+        return $users;
+    }
+
 
 
 }

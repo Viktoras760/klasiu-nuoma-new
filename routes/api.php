@@ -35,6 +35,7 @@ Route::patch('users/{id}', [UserController::class, 'declineRegistrationRequest']
 Route::get('users', [UserController::class, 'getAllUsers']);
 Route::delete('users/{id}', [UserController::class, 'deleteUser']);
 Route::put('users/{id}', [UserController::class, 'updateUser']);
+Route::get('school_users', [UserController::class, 'getSchoolUsers']);
 });
 
 //School routes
@@ -47,6 +48,7 @@ Route::group([
     Route::get('schools', [SchoolController::class, 'getAllSchools']);
     Route::delete('schools/{id}', [SchoolController::class, 'deleteSchool']);
     Route::get('test', [SchoolController::class, 'test']);
+    
 });
 
 //Floor routes
