@@ -93,9 +93,9 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('iat', [AuthController::class, 'login'])/*->name('login')*/;
+    Route::post('iat', [AuthController::class, 'login']);
     Route::post('users', [AuthController::class, 'register']);
-    Route::get('tokens', [AuthController::class, 'logout'])/*->name('logout')*/;
+    Route::get('tokens', [AuthController::class, 'logout']);
     Route::post('tokens', [AuthController::class, 'refresh']);
     Route::post('user', [AuthController::class, 'me']);
 });
